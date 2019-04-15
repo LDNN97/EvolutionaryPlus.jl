@@ -1,0 +1,10 @@
+name = "EvolutionaryPlus"
+uuid = "86afebff-25be-5d89-895e-9c1b929f3349"
+authors = ["LDNN97 <ldnn97@foxmail.com>"]
+version = "0.1.0"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
