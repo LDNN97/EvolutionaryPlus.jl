@@ -9,7 +9,6 @@ makedocs(;
     repo="https://github.com/LDNN97/EvolutionaryPlus.jl/blob/{commit}{path}#L{line}",
     sitename="EvolutionaryPlus.jl",
     authors="LDNN97",
-    assets=[],
 )
 
 deploydocs(;
