@@ -1,11 +1,9 @@
 module EvolutionaryPlus
 
 include("DE.jl")
-
-using Plots
-pyplot()
-
 using LinearAlgebra
+
+export model_training, predict
 
 function kernel_trick(x1::Float64, x2::Float64,
                       σ_f::Float64, l::Float64)
@@ -51,7 +49,7 @@ function model_training(tr_x::Array{Float64}, tr_y::Array{Float64})
                             pop.x[i, 1], pop.x[i, 2], pop.x[i, 3])
         end
     end
-    σ_f, l, σ_n= evolution(100, 10, 3, f)
+    σ_f, l, σ_n= evolution(30, 10, 3, f)
 
     A = K(tr_x, σ_f, l) + σ_n * UniformScaling(length(tr_x))
     L = cholesky(A)
@@ -60,7 +58,7 @@ function model_training(tr_x::Array{Float64}, tr_y::Array{Float64})
 end
 
 function predict(σ_f::Float64, l::Float64, L::Cholesky, α::Array{Float64},
-                 pr_x::Float64)
+                 tr_x::Array{Float64}, pr_x::Float64)
     k_s = K(tr_x, pr_x, σ_f, l)
     k_ss = K(pr_x, σ_f, l)
     mean = k_s' ⋅ α
@@ -68,21 +66,5 @@ function predict(σ_f::Float64, l::Float64, L::Cholesky, α::Array{Float64},
     vari = k_ss - v' ⋅ v
     return mean, vari
 end
-
-f(x) = sin(x)
-
-tr_x = Array(0:0.5:100)
-tr_y = f.(tr_x)
-
-σ_f, l, L, α = model_training(tr_x, tr_y)
-
-pr_x = Array(0:0.2:100)
-pr_y = Array{Float64}(undef, length(pr_x), 2)
-for i in 1:length(pr_x)
-    pr_y[i, 1], pr_y[i, 2] = predict(σ_f, l, L, α, pr_x[i])
-end
-
-plot(tr_x, tr_y)
-plot!(pr_x[50:450], pr_y[50:450, 1], err=pr_y[50:450, 2])
 
 end # module

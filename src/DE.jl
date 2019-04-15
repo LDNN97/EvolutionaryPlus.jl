@@ -2,6 +2,8 @@ abstract type EA end
 abstract type EA_F_O <: EA end
 abstract type DE <: EA_F_O end
 
+using Random
+
 mutable struct POP <: DE
     x::Array{Float64, 2}
     fit::Array{Float64, 1}
