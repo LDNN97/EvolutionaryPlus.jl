@@ -49,7 +49,7 @@ function model_training(tr_x::Array{Float64}, tr_y::Array{Float64})
                             pop.x[i, 1], pop.x[i, 2], pop.x[i, 3])
         end
     end
-    σ_f, l, σ_n= evolution(30, 10, 3, f)
+    σ_f, l, σ_n= evolution(50, 10, 3, f)
 
     A = K(tr_x, σ_f, l) + σ_n * UniformScaling(length(tr_x))
     L = cholesky(A)
