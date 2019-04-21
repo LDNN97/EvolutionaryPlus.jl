@@ -1,6 +1,16 @@
-abstract type EA end
-abstract type EA_F_O <: EA end
-abstract type DE <: EA_F_O end
+# Evolutionary Algorithm for optimization
+module EAfO
+
+# EAfO Abstract Type
+abstract type EAfOAT end
+
+abstract type DE <: EAfOAT end
+abstract type CMAES <: EAfOAT end
+abstract type MAES <: EAfOAT end
+abstract type LMMAES <: EAfOAT end
+
+export EAFO, DE, CMAES, MAES, LMMAES
+export POP, evolution
 
 using Random
 
@@ -9,7 +19,7 @@ mutable struct POP <: DE
     fit::Array{Float64, 1}
 end
 
-function evaluation(pop::EA_F_O)
+function evaluation(pop::EAfOAT)
     for i in 1:size(pop.x, 1)
         pop.fit[i] = sum(pop.x[i, j]^2 for j in 1:size(pop.x, 2))
     end
@@ -50,14 +60,17 @@ end
 function evolution(gen::Int64, pops::Int64, dim::Int64, eval)
     pop = POP(rand(pops, dim), zeros(pops))
     eval(pop)
-    println(0, " ", pop_opti(pop)[2])
+    println("start optimization:")
+    println("gen: ", 0, " fitness: ", pop_opti(pop)[2])
     for i in 1:gen
         new_pop = sample(pop)
         eval(new_pop)
         selection(pop, new_pop)
-        println(i, " ", pop_opti(pop)[2])
+        println("gen: ", i, " fitness: ", pop_opti(pop)[2])
     end
     return pop_opti(pop)[1]
 end
 
 # evolution(100, 50, 50, evaluation)
+
+end  # modue EAFO
