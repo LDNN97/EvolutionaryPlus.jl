@@ -1,11 +1,12 @@
 module EvolutionaryPlus
 
-include("EAfO.jl")
-using .EAfO
-export evolution
+include("DE.jl")
+export DE
 
-include("SuMwGPs.jl")
-using .SuMwGPs
-export model_training, predict
+include("CMA_ES.jl")
+export CMA_ES
+
+include("GPs.jl")
+export GPs
 
 end # module

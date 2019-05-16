@@ -1,8 +1,7 @@
 # Surrogate Model with Gaussian Processes
-module SuMwGPs
+module GPs
 
-include("EAfO.jl")
-using .EAfO
+using ..DE
 
 using LinearAlgebra
 
@@ -45,17 +44,17 @@ function marginal_likelihood(tr_x::Array{Float64}, tr_y::Array{Float64},
 end
 
 function model_training(tr_x::Array{Float64}, tr_y::Array{Float64})
-    f(pop::POP) = begin
+    f(pop::DE.Population) = begin
         for i in 1:size(pop.x, 1)
             pop.fit[i] = marginal_likelihood(tr_x, tr_y,
                             pop.x[i, 1], pop.x[i, 2], pop.x[i, 3])
         end
     end
 
-    σ_f, l, σ_n= evolution(50, 10, 3, f)
+    σ_f, l, σ_n= DE_evolution(f, 10, 3, 50)[1]
     A = K(tr_x, σ_f, l) + σ_n * UniformScaling(length(tr_x))
     while !isposdef(A)
-        σ_f, l, σ_n= evolution(50, 10, 3, f)
+        σ_f, l, σ_n= DE_evolution(f, 10, 3, 50)[1]
         A = K(tr_x, σ_f, l) + σ_n * UniformScaling(length(tr_x))
     end
 

@@ -4,5 +4,8 @@
 ```
 
 ```@autodocs
-Modules = [EvolutionaryPlus]
+Modules = [EvolutionaryPlus,
+           EvolutionaryPlus.DE,
+           EvolutionaryPlus.CMA_ES,
+           EvolutionaryPlus.GPs]
 ```
